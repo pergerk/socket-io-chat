@@ -1,0 +1,15 @@
+{
+    "name": "chat-environment",
+    "version": "1.0.0",
+    "description": "Chat Env",
+    "scripts": {
+      "debug": "docker-compose -f docker-compose.yml -f docker-compose.debug.yml up --build -d",
+      "debug:stop": "docker-compose -f docker-compose.yml -f docker-compose.debug.yml down -v",
+      "debug:log": "docker-compose -f docker-compose.yml -f docker-compose.debug.yml logs -f app",
+      "prod": "docker-compose -f docker-compose.yml up --build -d",
+      "prod:stop": "docker-compose -f docker-compose.yml down",
+      "debug:backend": "docker-compose -f docker-compose.yml up --build -d redis mysql phpmyadmin"
+    },
+    "author": "Kuliev Abakar <pergerk@gmail.com>",
+    "license": "ISC"
+}

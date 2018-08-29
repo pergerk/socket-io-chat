@@ -2,39 +2,54 @@ version: '3.2'
 
 services:
   app:
-    build: ./docker/app
-    container_name: chat_app
+    build: ./backend
+    container_name: chat_backend
     environment:
       NODE_ENV: production
     ports:
       - 3000:3000
     networks: 
       - app_net
+    command: npm start
+    restart: always
+    links:
+      - mysql:db
+      - redis:redis
     volumes: 
       - type: bind
         source: ./backend
         target: /usr/src/app
+  frontend: 
+    build: ./frontend
+    restart: always
+    container_name: chat_frontend
+    ports:
+      - 8080:80
+    links:
+      - app:backend
   redis:
-    build: ./docker/redis
+    build: ./redis
     restart: always
     volumes: 
       - type: bind
-        source: ./docker/redis/data
+        source: ./redis/data
         target: /data
     ports:
-      - 3679:3679
+      - 6379:6379
     networks: 
       - app_net
   mysql:
-    build: ./docker/mysql
+    build: ./mysql
     container_name: chat_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: zxcds12#12
     volumes: 
       - type: bind
-        source: ./docker/mysql/data
+        source: ./mysql/data
         target: /var/lib/mysql
+    ports: 
+      - 3306:3306
     networks: 
       - app_net
   phpmyadmin:
